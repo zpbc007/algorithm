@@ -289,7 +289,7 @@ public class Stack<Item> implements Iterable<Item> {
 }
 ```
 
-使用了链表存储内部数据，不用考虑容量的变化
+使用了链表存储内部数据，不用考虑容量的变化。在链表的头部进行数据的插入与读取。
 
 #### 缺点
 
@@ -297,3 +297,140 @@ public class Stack<Item> implements Iterable<Item> {
 - ~~只能用于存放String类型的数据，如果要存放其他类型，还需要重写。~~
 - ~~不支持迭代。~~
 - ~~数组容量改变时会影响速度。~~
+
+## 2 队列的实现
+
+先入先出(FIFO)。基于链表实现队列：将队列表示为一条从最早插入的元素到最近插入的元素的链表。head指向队列的开头，tail指向队列的结尾。新插入的元素放在队尾，出列从队列头部出。
+
+### 2.1 API
+
+|返回值类型|函数名|描述|
+|---|---|---|
+||Queue()|创建空队列|
+|void|enqueue(Item item)|添加一个元素|
+|Item|dequeue()|删除队列中最先添加的元素|
+|boolean|isEmpty()|队列是否为空|
+|int|size()|队列中元素的数量|
+
+### 2.2 代码实现
+
+```
+public class Queue<Item> implements Iterable<Item> {
+    private Node head;
+    private Node tail;
+    private int N;
+
+    private class Node{
+        Item item;
+        Node next;
+    }
+
+    public int size() {
+        return N;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public void enqueue(Item item) {
+        Node oldTail = tail;
+        tail = new Node();
+        tail.item = item;
+        tail.next = null;
+        if (isEmpty()) head = tail; 
+        else oldTail.next = tail;
+        N++;
+    }
+
+    public Item dequeue() {
+        Item result = head.item;
+        head = head.next;
+        if (isEmpty()) tail = null;
+        N--;
+        return result;
+    } 
+
+    public Iterator<Item> iterator() {
+        return new QueueIterator();
+    } 
+
+    private class QueueIterator implements Iterator<Item>{
+        private Node current = head;
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public Item next() {
+            Item result = current.item;
+            current = current.next;
+            return result;
+        }
+
+        public void remove() {}
+    }
+}
+```
+
+## 3 背包实现
+
+不支持从中删除元素的集合数据类型：它的目的就是帮助用例收集元素并迭代遍历所有收集到的元素。
+
+### 3.1 API
+
+|返回值类型|函数名|描述|
+|---|---|---|
+||Bag()|创建一个空背包|
+|void|add(Item item)|添加一个元素|
+|boolean|isEmpty()|背包是否为空|
+|int|size()|背包中的元素数量|
+
+### 3.2 代码实现
+
+```
+public class Bag<Item> implements Iterable<Item> {
+    private Node head;
+    private int N;
+
+    private class Node {
+        Item item;
+        Node next;
+    }
+
+    public void add(Item item) {
+        Node oldHead = head;
+        head = new Node();
+        head.item = item;
+        head.next = oldHead;
+        N++;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public int size() {
+        return N;
+    }
+
+    public Iterator<Item> iterator() {
+        return new BagIterator();
+    }
+
+    private class BagIterator implements Iterator<Item> {
+        private Node current = head;
+
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        public Item next() {
+            Item result = current.item;
+            current = current.next;
+            return result;
+        }
+    }
+}
+```
+
