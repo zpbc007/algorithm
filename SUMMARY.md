@@ -14,3 +14,7 @@
     * [5 原地归并的抽象方法](chapter2/5.md)
     * [6 自顶向下的归并排序](chapter2/6.md)
     * [7 自底向上的归并排序](chapter2/7.md)
+    * [8 快速排序](chapter2/8.md)
+    * [9 优化快速排序](chapter2/9.md)
+    * [10 优先队列](chapter2/10.md)
+    * [11 堆](chapter2/11.md)
