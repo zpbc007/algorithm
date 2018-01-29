@@ -19,3 +19,4 @@
     * [10 优先队列](chapter2/10.md)
     * [11 堆](chapter2/11.md)
     * [12 索引优先队列](chapter2/12.md)
+    * [13 堆排序](chapter2/13.md)
